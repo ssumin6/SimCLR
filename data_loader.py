@@ -22,13 +22,23 @@ class DataSetWrapper(object):
         return train_loader, valid_loader
 
     def _simclr_transform(self):
-        ### TODO: Complete SimCLR transforms ###
         # I strongly recommand you to use torchvision.transforms to implement data augmentation
         # You can use provided gaussian_blur if you want
 
         data_transforms: transforms.Compose
 
+        s = 1.0 # color distortion strength
+        color_jitter = transforms.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)
         gaussian_blur = GaussianBlur(kernel_size = int(0.1* self.input_shape[0]))
+
+        data_transforms = transforms.Compose([
+            transforms.RandomResizedCrop(size=self.input_shape[0]), # Random cropping & resize to original image size
+            transforms.RandomHorizontalFlip(), 
+            transforms.RandomApply([color_jitter], p=0.8), # Random color distortions
+            transforms.RandomGrayscale(p=0.2),
+            gaussian_blur,
+            transforms.ToTensor()
+        ])
 
         return data_transforms
 
