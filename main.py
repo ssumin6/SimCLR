@@ -1,4 +1,5 @@
 import os
+import time
 import argparse
 import numpy as np
 import torch
@@ -56,10 +57,10 @@ def main(args):
         return loss
 
     for epoch in range(epochs):
-
+        start = time.time()
         for (xi, xj), _ in train_loader:
             loss = train(xi, xj)
-            print("[Epoch %d] Train Loss %f" %(epoch, loss))
+        print("[Epoch %d] Train Loss %f. Time takes %s" %(epoch, loss, time.time()-start)) 
 
         with torch.no_grad():
             losses = []
