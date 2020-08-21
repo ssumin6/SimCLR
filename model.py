@@ -18,4 +18,4 @@ class SimCLR(nn.Module):
 
     def get_hidden(self, x):
         h = self.f(x)
-        return h
+        return h.squeeze()
