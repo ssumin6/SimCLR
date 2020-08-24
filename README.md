@@ -16,7 +16,7 @@ Implementation of SimCLR (A Simple Framework for Contrastive Learning of Visual 
 
 |Dataset|STL10|CIFAR10|
 |------|---|---|
-|Baseline|54.801 / 86.820|70.653 / 82.482|
+|Baseline|54.801|70.653|
 |No Finetune|66.192|50.401|
 |Finetune|73.866|71.795|
 
