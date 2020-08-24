@@ -6,11 +6,12 @@ from gaussian_blur import GaussianBlur
 from torchvision import datasets
 
 class DataSetWrapper(object):
-    def __init__(self, batch_size, num_workers, valid_size, input_shape):
+    def __init__(self, batch_size, num_workers, valid_size, input_shape, strength):
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.valid_size = valid_size
         self.input_shape = input_shape
+        self.strength = strength
 
     def get_data_loaders(self):
         data_augment = self._simclr_transform()
@@ -27,7 +28,7 @@ class DataSetWrapper(object):
 
         data_transforms: transforms.Compose
 
-        s = 1.0 # color distortion strength
+        s = self.strength # color distortion strength
         color_jitter = transforms.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)
         gaussian_blur = GaussianBlur(kernel_size = int(0.1* self.input_shape[0]))
 

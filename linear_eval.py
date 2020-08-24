@@ -35,10 +35,15 @@ def main(args):
     hidden_dim = args.hid_dim
 
     model = SimCLR(out_dim=256).to(device)
-
-    # Dataset
-    train_dataset = datasets.STL10('./data', split='train', transform=transforms.ToTensor(), download=True)
-    test_dataset = datasets.STL10('./data', split='test', transform=transforms.ToTensor(), download=True)
+    
+    if args.dataset == 'STL10':
+        # Dataset
+        train_dataset = datasets.STL10('./data', split='train', transform=transforms.ToTensor(), download=True)
+        test_dataset = datasets.STL10('./data', split='test', transform=transforms.ToTensor(), download=True)
+    else: # cifar dataset
+        img_transform = transforms.Compose([transforms.CenterCrop(96), transforms.ToTensor()])
+        train_dataset = datasets.CIFAR10('./data', train=True, transform=img_transform, download=True)
+        test_dataset = datasets.CIFAR10('./data', train=False, transform=img_transform, download=True)
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, drop_last=True, num_workers=args.num_worker, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size, drop_last=True, num_workers=args.num_worker)
 
@@ -106,6 +111,12 @@ if __name__ == "__main__":
         '--simclr_path',
         type=str,
         default="model.ckpt")
+
+    parser.add_argument(
+        '--dataset',
+        type=str,
+        choices={"STL10", "cifar"},
+        default="STL10")
 
     parser.add_argument(
         '--hid_dim',

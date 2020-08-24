@@ -17,7 +17,7 @@ def main(args):
     proj_dim = args.out_dim
 
     ### DataLoader ###
-    dataset = DataSetWrapper(args.batch_size, args.num_worker , args.valid_size, input_shape = (96, 96, 3))
+    dataset = DataSetWrapper(args.batch_size, args.num_worker , args.valid_size, input_shape = (96, 96, 3), strength=args.strength)
     train_loader , valid_loader = dataset.get_data_loaders()
 
     model = SimCLR(out_dim=proj_dim).to(device)
@@ -73,7 +73,7 @@ def main(args):
                 val_loss = loss
             else:
                 # You have to save the model using early stopping
-                torch.save({"model": model.state_dict(), "epoch": epoch, "loss": loss}, "model.ckpt")
+                torch.save({"model": model.state_dict(), "epoch": epoch, "loss": loss}, "model%f.ckpt" %(args.strength))
                 return
 
 
@@ -94,10 +94,17 @@ if __name__ == '__main__':
         '--temperature',
         type=float,
         default=0.5)
+
+    parser.add_argument(
+        '--strength',
+        type=float,
+        default=1.0)
+
     parser.add_argument(
         '--out_dim',
         type=int,
         default=256)
+
     parser.add_argument(
         '--num_worker',
         type=int,
