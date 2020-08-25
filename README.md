@@ -9,8 +9,10 @@ Implementation of SimCLR (A Simple Framework for Contrastive Learning of Visual 
   * opencv-python
   
 * **command**
+```bash
   - python3 main.py --epochs [epochs] --batch_size [B] --temperature [T] --strength [S] --out_dim [out_dim] --num_worker [N] --valid_size [val_size] 
   - python3 linear_eval.py --batch_size [B] --simclr_path [path] --dataset [dataset] --hid_dim [hid_dim] --num_worker [N] --finetune --baseline
+```
   
 * **results**
 
